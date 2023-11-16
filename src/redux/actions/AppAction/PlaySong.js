@@ -149,3 +149,29 @@ export const previousF = (payload) => {
         payload
     }
 }
+
+// ---------------------progress---------------------
+export const PROGRESS = 'PROGRESS';
+export const PROGRESS_S = 'PROGRESS_SUCCESS';
+export const PROGRESS_F = 'PROGRESS_FAILED';
+
+export const progress = (payload) => {
+    return {
+        type: PROGRESS,
+        payload
+    }
+} 
+
+export const progressS = (payload) => {
+    return {
+        type: PROGRESS_S,
+        payload
+    }
+}
+
+export const progressF = (payload) => {
+    return {
+        type: PROGRESS_F,
+        payload
+    }
+}

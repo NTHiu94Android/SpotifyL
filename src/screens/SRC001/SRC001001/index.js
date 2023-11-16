@@ -72,10 +72,7 @@ const Home = () => {
             url={itemSongPlaying.url ? itemSongPlaying.url : defaultUrl}
             songName={itemSongPlaying.songName ? itemSongPlaying.songName : 'Song Name Undefined'}
             songDetail={itemSongPlaying.songDetail ? itemSongPlaying.songDetail : 'Song Detail Undefined'}
-            itemSongPlaying={itemSongPlaying ? itemSongPlaying : {}}
             indexSong={indexSong ? indexSong : 0}
-            link={itemSongPlaying.link ? itemSongPlaying.link : ''}
-            pk={itemSongPlaying.pk ? itemSongPlaying.pk : 0}
           />
         )
       }

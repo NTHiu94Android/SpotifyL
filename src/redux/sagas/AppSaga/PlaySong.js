@@ -6,6 +6,7 @@ import {
     STOP, STOP_S, STOP_F,
     PAUSE, PAUSE_S, PAUSE_F,
     REPLAY, REPLAY_S, REPLAY_F,
+    PROGRESS, PROGRESS_S, PROGRESS_F,
 } from '../../actions';
 
 function* playSaga(action) {
@@ -93,6 +94,20 @@ function* stopSaga(action) {
 
 }
 
+function* progressSaga(action) {
+    try {
+        yield put({
+            type: PROGRESS_S,
+            payload: action.payload,
+        });
+    } catch (err) {
+        yield put({
+            type: PROGRESS_F,
+            payload: err,
+        });
+    }
+}
+
 export default function* playSongSaga (action) {
     if (action.type === PLAY) {
         yield call(playSaga, action);
@@ -106,5 +121,7 @@ export default function* playSongSaga (action) {
         yield call(stopSaga, action);
     }else if(action.type === REPLAY) {
         yield call(replaySaga, action);
+    }else if(action.type === PROGRESS) {
+        yield call(progressSaga, action);
     }
 }

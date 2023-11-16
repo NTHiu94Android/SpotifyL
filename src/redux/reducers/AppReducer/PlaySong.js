@@ -5,6 +5,7 @@ import {
     STOP, STOP_S, STOP_F,
     PAUSE, PAUSE_S, PAUSE_F,
     REPLAY, REPLAY_S, REPLAY_F,
+    PROGRESS, PROGRESS_S, PROGRESS_F,
 } from '../../actions';
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
     indexSong: 0,
     itemSongPlaying: {},
     listSong: [],
+    progress: 0,
 };
 
 const playSongReducer = (state = initialState, action) => {
@@ -113,6 +115,20 @@ const playSongReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload,
 
+            };
+        case PROGRESS:
+            return {
+                ...state,
+            };
+        case PROGRESS_S: 
+            return {
+                ...state,
+                progress: action.payload,
+            };
+        case PROGRESS_F:
+            return {
+                ...state,
+                error: action.payload
             };
         default:
             return state;

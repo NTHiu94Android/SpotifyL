@@ -20,6 +20,8 @@ import {
     pause, pauseS, pauseF,
     REPLAY, REPLAY_S, REPLAY_F,
     replay, replayS, replayF,
+    PROGRESS, PROGRESS_S, PROGRESS_F,
+    progress, progressS, progressF,
 } from '../actions/AppAction/PlaySong';
 
 export {
@@ -43,5 +45,7 @@ export {
     pause, pauseS, pauseF,
     REPLAY, REPLAY_S, REPLAY_F,
     replay, replayS, replayF,
+    PROGRESS, PROGRESS_S, PROGRESS_F,
+    progress, progressS, progressF,
 
 }
