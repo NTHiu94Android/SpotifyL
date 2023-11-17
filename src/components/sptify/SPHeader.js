@@ -7,17 +7,17 @@ const SPHeader = ({
     hasIconLeft = false,
     iconLeft,
     iconLeftColor = Color.white,
-    iconLeftSize = 24,
+    iconLeftSize = 20,
     iconLeftOnPress,
     hasIconRight = false,
     iconRight,
     iconRightColor = Color.white,
-    iconRightSize = 24,
+    iconRightSize = 20,
     iconRightOnPress,
     hasTitle = false,
     title,
     titleColor = Color.white,
-    titleSize = 24,
+    titleSize = 20,
     hasLogo = false,
     logo = require('../../assest/images/logo.png'),
     logoSize = 32,
@@ -69,7 +69,8 @@ const SPHeader = ({
                     style={{
                         color: titleColor,
                         fontSize: titleSize,
-                        fontFamily: 'Roboto-Bold'
+                        fontFamily: 'Roboto-Bold',
+                        fontWeight: 'bold'
                     }}
                 >
                     {title}

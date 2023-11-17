@@ -1,10 +1,12 @@
-import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDispatch, useSelector } from 'react-redux';
-import { PLAY, NEXT, PREVIOUS, PAUSE, REPLAY, PROGRESS } from '../../redux/actions';
+import { NEXT, PREVIOUS, PAUSE, REPLAY, PROGRESS, PLAY } from '../../redux/actions';
 import Color from '../../assest/colors';
 import React, { useEffect, useState } from 'react';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, {
+    useProgress, useTrackPlayerEvents
+} from 'react-native-track-player';
 import * as Progress from 'react-native-progress';
 
 const SPControl = ({
@@ -12,50 +14,57 @@ const SPControl = ({
     songName,
     songDetail,
     indexSong,
+    navigation
 }) => {
     const dispatch = useDispatch();
     const width = Dimensions.get('window').width;
     const isPlay = useSelector(state => state.playSongReducer.isPlaying);
     const listSong = useSelector(state => state.playSongReducer.listSong);
+    const listTrack = listSong.map((item, index) => {
+        return {
+            id: item.pk,
+            url: item.link,
+            title: item.songName,
+            artist: item.songDetail,
+            artwork: item.url,
+        }
+    });
+
     const [isPlayerInitialized, setIsPlayerInitialized] = useState(false);
     const progress = useSelector(state => state.playSongReducer.progress);
+    const { position, duration } = useProgress();
 
+    //--------Thanh progress-----------
     useEffect(() => {
-        const updateProgress = async () => {
-            const trackId = await TrackPlayer.getCurrentTrack();
-            if (trackId) {
-                const trackDuration = await TrackPlayer.getDuration();
-                const trackPosition = await TrackPlayer.getPosition();
-                const calculatedProgress = (trackPosition / trackDuration) * 100;
-                console.log('Pro: ', calculatedProgress);
-                console.log('ProRedux:', progress);
-                dispatch({
-                    type: PROGRESS, payload: calculatedProgress.toFixed(0)
-                });
-            }
-        };
-
-        const intervalId = setInterval(() => {
-            console.log('Interval', isPlay);
-            if(isPlay){
-                updateProgress();
-            }
-        }, 1000);
-
-        // Hủy interval khi component unmount
-        return () => clearInterval(intervalId);
-    }, [progress, indexSong]);
-
-    useEffect(() => {
-        const listTrack = listSong.map((item, index) => {
-            return {
-                id: item.pk,
-                url: item.link,
-                title: item.songName,
-                artist: item.songDetail,
-                artwork: item.url,
-            }
+        const durationNew = duration == 0 ? 1 : duration;
+        const calculatedProgress = (position / durationNew) * 100;
+        dispatch({
+            type: PROGRESS, payload: calculatedProgress.toFixed(0)
         });
+    }, [position, duration]);
+
+    //--------Tu dong chuyen bai hat----------
+    useTrackPlayerEvents(['playback-track-changed'], async (event) => {
+        console.log('Track changed:', event);
+        const trackObject = await TrackPlayer.getTrack(event.nextTrack);
+        const itemSongNew = {
+            pk : trackObject.id,
+            link : trackObject.url,
+            songName : trackObject.title,
+            songDetail : trackObject.artist,
+            url : trackObject.artwork,
+        }
+        // if(indexSong == trackObject.id) return;
+        dispatch({ type: PLAY, payload: {
+            isPlaying: true,
+            itemSongPlaying:  itemSongNew ,
+            listSong: listSong,
+            indexSong: indexSong,
+        } });
+    });
+
+    //-------Play nhac khi chon bai hoac chuyen bai-----------
+    useEffect(() => {
         const setupPlayerAndPlay = async () => {
             if (!isPlayerInitialized) {
                 await TrackPlayer.setupPlayer();
@@ -71,19 +80,18 @@ const SPControl = ({
         setupPlayerAndPlay();
     }, [indexSong]);
 
+    //---------Play/Pause nhac----------
     const playMusic = async () => {
         if (isPlay) {
             dispatch({ type: PAUSE });
             await TrackPlayer.pause();
-            dispatch({
-                type: PROGRESS, payload: 0
-            });
         } else {
             dispatch({ type: REPLAY });
             await TrackPlayer.play();
         }
     }
 
+    //--------Chuyen bai tiep theo----------
     const nextMusic = async () => {
         dispatch({
             type: NEXT, payload: {
@@ -92,6 +100,8 @@ const SPControl = ({
         });
         // await TrackPlayer.skipToNext();
     }
+
+    //-------Quay lai bai truoc---------
     const previousMusic = async () => {
         dispatch({
             type: PREVIOUS, payload: {
@@ -100,9 +110,8 @@ const SPControl = ({
         });
         // await TrackPlayer.skipToPrevious();
     }
+
     return (
-
-
         <View style={{
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -116,22 +125,25 @@ const SPControl = ({
             right: 0,
             backgroundColor: Color.bottobTabColor,
         }}>
-            <Progress.Bar 
-                progress={progress/100} 
-                height={2} 
+            <Progress.Bar
+                progress={progress / 100}
+                height={2}
                 color={Color.buttonColor}
                 backgroundColor={Color.white}
                 width={width}
             />
-            <View style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingHorizontal: 10,
-                alignItems: 'center',
-                flex: 1,
-                paddingHorizontal: 10,
-                width: '100%'
-            }}>
+            <TouchableOpacity
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: 10,
+                    alignItems: 'center',
+                    flex: 1,
+                    paddingHorizontal: 10,
+                    width: '100%'
+                }}
+                onPress={() => navigation.navigate('SRC002')}
+            >
 
 
                 <View style={{
@@ -205,7 +217,7 @@ const SPControl = ({
                         onPress={() => nextMusic()}
                     />
                 </View>
-            </View>
+            </TouchableOpacity>
         </View>
     )
 }

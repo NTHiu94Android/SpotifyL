@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { View, Text, Image } from 'react-native'
 import { LogBox, SafeAreaView } from "react-native";
@@ -37,25 +37,25 @@ const App = () => {
       setShowRealApp(true);
     }, 2000);
   }, []);
-  
+
   return (
     <Provider store={Redux.store}>
-      <SafeAreaView style={{ 
-        flex: 1, 
-        backgroundColor: Color.mainColor 
+      <SafeAreaView style={{
+        flex: 1,
+        backgroundColor: Color.mainColor
       }}>
         {
           !showRealApp ? (
             <AppIntroSlider
               renderItem={({ item }) => (
-                <View style={{ 
-                  flex: 1, 
+                <View style={{
+                  flex: 1,
                   justifyContent: 'center',
                   alignItems: 'center',
                   backgroundColor: Color.mainColor
                 }}>
-                  <Image 
-                    source={item.image} 
+                  <Image
+                    source={item.image}
                     style={{
                       width: 270,
                       height: 80,
@@ -74,13 +74,30 @@ const App = () => {
             <NavigationContainer>
               <Stack.Navigator
                 initialRouteName="SRC001"
-                screenOptions={{ 
-                  headerShown: false, 
-                  gestureEnabled: false 
+                screenOptions={{
+                  headerShown: false,
+                  gestureEnabled: false
                 }}
               >
                 <Stack.Screen name="SRC001" component={SRC001} />
-                <Stack.Screen name="SRC002" component={SRC002} />
+                <Stack.Screen
+                  name="SRC002"
+                  component={SRC002}
+                  options={{
+                    cardStyleInterpolator: ({ current, layouts }) => ({
+                      cardStyle: {
+                        transform: [
+                          {
+                            translateY: current.progress.interpolate({
+                              inputRange: [0, 1],
+                              outputRange: [layouts.screen.height, 0],
+                            })
+                          },
+                        ],
+                      },
+                    }),
+                  }}
+                />
                 <Stack.Screen name="SRC003" component={SRC003} />
 
               </Stack.Navigator>

@@ -22,6 +22,12 @@ import {
     replay, replayS, replayF,
     PROGRESS, PROGRESS_S, PROGRESS_F,
     progress, progressS, progressF,
+    AUTO_SONG, AUTO_SONG_S, AUTO_SONG_F,
+    autoSong, autoSongS, autoSongF,
+    TIME_START, TIME_START_S, TIME_START_F,
+    timeStart, timeStartS, timeStartF,
+    TIME_END, TIME_END_S, TIME_END_F,
+    timeEnd, timeEndS, timeEndF,
 } from '../actions/AppAction/PlaySong';
 
 export {
@@ -47,5 +53,11 @@ export {
     replay, replayS, replayF,
     PROGRESS, PROGRESS_S, PROGRESS_F,
     progress, progressS, progressF,
+    AUTO_SONG, AUTO_SONG_S, AUTO_SONG_F,
+    autoSong, autoSongS, autoSongF,
+    TIME_START, TIME_START_S, TIME_START_F,
+    timeStart, timeStartS, timeStartF,
+    TIME_END, TIME_END_S, TIME_END_F,
+    timeEnd, timeEndS, timeEndF,
 
 }

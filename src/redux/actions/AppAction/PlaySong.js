@@ -124,6 +124,32 @@ export const nextF = (payload) => {
     }
 }
 
+export const AUTO_SONG = 'AUTO_SONG';
+export const AUTO_SONG_S = 'AUTO_SONG_SUCCESS';
+export const AUTO_SONG_F = 'AUTO_SONG_FAILED';
+
+export const autoSong = (payload) => {
+    return {
+        type: AUTO_SONG,
+        payload
+    }
+}
+
+export const autoSongS = (payload) => {
+    return {
+        type: AUTO_SONG_S,
+        payload
+    }
+}
+
+export const autoSongF = (payload) => {
+    return {
+        type: AUTO_SONG_F,
+        payload
+    }
+}
+
+
 // ---------------------previous song---------------------
 export const PREVIOUS = 'PREVIOUS';
 export const PREVIOUS_S = 'PREVIOUS_SUCCESS';
@@ -172,6 +198,56 @@ export const progressS = (payload) => {
 export const progressF = (payload) => {
     return {
         type: PROGRESS_F,
+        payload
+    }
+}
+
+export const TIME_START = 'TIME_START';
+export const TIME_START_S = 'TIME_START_SUCCESS';
+export const TIME_START_F = 'TIME_START_FAILED';
+
+export const timeStart = (payload) => {
+    return {
+        type: TIME_START,
+        payload
+    }
+}
+
+export const timeStartS = (payload) => {
+    return {
+        type: TIME_START_S,
+        payload
+    }
+}
+
+export const timeStartF = (payload) => {
+    return {
+        type: TIME_START_F,
+        payload
+    }
+}
+
+export const TIME_END = 'TIME_END';
+export const TIME_END_S = 'TIME_END_SUCCESS';
+export const TIME_END_F = 'TIME_END_FAILED';
+
+export const timeEnd = (payload) => {
+    return {
+        type: TIME_END,
+        payload
+    }
+}
+
+export const timeEndS = (payload) => {
+    return {
+        type: TIME_END_S,
+        payload
+    }
+}
+
+export const timeEndF = (payload) => {
+    return {
+        type: TIME_END_F,
         payload
     }
 }

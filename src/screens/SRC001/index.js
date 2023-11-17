@@ -3,10 +3,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Color from '../../assest/colors';
 import Home from './SRC001001';
-import History from './SRC001002';
-import Playlist from './SRC001003';
-import Profile from './SRC001004';
-import Spotify from './SRC001005';
+import Playlist from './SRC001002';
+import Spotify from './SRC001003';
+import History from './SRC001004';
+import Profile from './SRC001005';
 
 const Tab = createBottomTabNavigator();
 

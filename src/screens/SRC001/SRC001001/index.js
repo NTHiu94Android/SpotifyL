@@ -73,6 +73,7 @@ const Home = () => {
             songName={itemSongPlaying.songName ? itemSongPlaying.songName : 'Song Name Undefined'}
             songDetail={itemSongPlaying.songDetail ? itemSongPlaying.songDetail : 'Song Detail Undefined'}
             indexSong={indexSong ? indexSong : 0}
+            navigation={navigation}
           />
         )
       }

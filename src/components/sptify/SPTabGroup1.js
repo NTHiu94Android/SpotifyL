@@ -17,7 +17,7 @@ const Tab = ({ dataToTab, navigation }) => {
             listSong: dataToTab,
             indexSong: dataToTab.indexOf(item),
         } });
-        // navigation.navigate('SRC002');
+        navigation.navigate('SRC002');
     }
     
     useEffect(() => {

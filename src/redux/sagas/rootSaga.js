@@ -2,6 +2,7 @@ import { all, takeEvery } from 'redux-saga/effects';
 import { 
     LOGIN, CHANGE_DARK_MODE, CHANGE_LIGHT_MODE,
     NEXT, PLAY, PREVIOUS, PAUSE, REPLAY, PROGRESS,
+    AUTO_SONG, TIME_START, TIME_END,
 } from "../actions";
 import loginSaga from './LoginSaga';
 import appSaga from './AppSaga/ChangMode';
@@ -18,6 +19,9 @@ const sagas = function* () {
         takeEvery(PAUSE, playSongSaga),
         takeEvery(REPLAY, playSongSaga),
         takeEvery(PROGRESS, playSongSaga),
+        takeEvery(AUTO_SONG, playSongSaga),
+        takeEvery(TIME_START, playSongSaga),
+        takeEvery(TIME_END, playSongSaga),
     ]);
 }
 

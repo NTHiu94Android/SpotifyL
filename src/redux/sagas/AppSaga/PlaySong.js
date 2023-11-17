@@ -7,6 +7,9 @@ import {
     PAUSE, PAUSE_S, PAUSE_F,
     REPLAY, REPLAY_S, REPLAY_F,
     PROGRESS, PROGRESS_S, PROGRESS_F,
+    AUTO_SONG, AUTO_SONG_S, AUTO_SONG_F,
+    TIME_START, TIME_START_S, TIME_START_F,
+    TIME_END, TIME_END_S, TIME_END_F,
 } from '../../actions';
 
 function* playSaga(action) {
@@ -46,6 +49,20 @@ function* nextSaga(action) {
     } catch (err) {
         yield put({
             type: NEXT_F,
+            payload: err,
+        });
+    }
+}
+
+function* autoSongSaga(action) {
+    try {
+        yield put({
+            type: AUTO_SONG_S,
+            payload: action.payload,
+        });
+    } catch (err) {
+        yield put({
+            type: AUTO_SONG_F,
             payload: err,
         });
     }
@@ -108,6 +125,34 @@ function* progressSaga(action) {
     }
 }
 
+function* timeStartSaga(action) {
+    try {
+        yield put({
+            type: TIME_START_S,
+            payload: action.payload,
+        });
+    } catch (err) {
+        yield put({
+            type: TIME_START_F,
+            payload: err,
+        });
+    }
+}
+
+function* timeEndSaga(action) {
+    try {
+        yield put({
+            type: TIME_END_S,
+            payload: action.payload,
+        });
+    } catch (err) {
+        yield put({
+            type: TIME_END_F,
+            payload: err,
+        });
+    }
+}
+
 export default function* playSongSaga (action) {
     if (action.type === PLAY) {
         yield call(playSaga, action);
@@ -123,5 +168,11 @@ export default function* playSongSaga (action) {
         yield call(replaySaga, action);
     }else if(action.type === PROGRESS) {
         yield call(progressSaga, action);
+    }else if(action.type === AUTO_SONG) {
+        yield call(autoSongSaga, action);
+    }else if(action.type === TIME_START) {
+        yield call(timeStartSaga, action);
+    }else if(action.type === TIME_END) {
+        yield call(timeEndSaga, action);
     }
 }

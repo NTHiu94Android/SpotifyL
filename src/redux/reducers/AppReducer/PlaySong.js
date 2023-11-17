@@ -6,6 +6,9 @@ import {
     PAUSE, PAUSE_S, PAUSE_F,
     REPLAY, REPLAY_S, REPLAY_F,
     PROGRESS, PROGRESS_S, PROGRESS_F,
+    AUTO_SONG, AUTO_SONG_S, AUTO_SONG_F,
+    TIME_START, TIME_START_S, TIME_START_F,
+    TIME_END, TIME_END_S, TIME_END_F,
 } from '../../actions';
 
 const initialState = {
@@ -15,6 +18,8 @@ const initialState = {
     itemSongPlaying: {},
     listSong: [],
     progress: 0,
+    timeStart: '',
+    timeEnd: '',
 };
 
 const playSongReducer = (state = initialState, action) => {
@@ -99,6 +104,20 @@ const playSongReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload
             };
+        case AUTO_SONG:
+            return {
+                ...state,
+            };
+        case AUTO_SONG_S:
+            return {
+                ...state,
+                itemSongPlaying: action.payload.itemSongPlaying,
+            };
+        case AUTO_SONG_F:
+            return {
+                ...state,
+                error: action.payload
+            };
         case PREVIOUS:
             return {
                 ...state,
@@ -126,6 +145,34 @@ const playSongReducer = (state = initialState, action) => {
                 progress: action.payload,
             };
         case PROGRESS_F:
+            return {
+                ...state,
+                error: action.payload
+            };
+        case TIME_START:
+            return {
+                ...state,
+            };
+        case TIME_START_S:
+            return {
+                ...state,
+                timeStart: action.payload,
+            };
+        case TIME_START_F:
+            return {
+                ...state,
+                error: action.payload
+            };
+        case TIME_END:
+            return {
+                ...state,
+            };
+        case TIME_END_S:
+            return {
+                ...state,
+                timeEnd: action.payload,
+            };
+        case TIME_END_F:
             return {
                 ...state,
                 error: action.payload
