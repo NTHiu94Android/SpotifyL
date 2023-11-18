@@ -1,13 +1,18 @@
-import { View, Text, FlatList, ScrollView, Image, Animated, Easing, Dimensions } from 'react-native';
+import { View, Text, Image, Animated, Easing, Dimensions } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import Color from '../../../assest/colors';
 import { Slider } from '@miblanchard/react-native-slider';
-import { SPHeader, ITAlbum, SPTab, SPTabGroup1, SPControl } from '../../../components';
+import { SPHeader } from '../../../components';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import TrackPlayer, { useProgress } from 'react-native-track-player';
+import IconComunity from 'react-native-vector-icons/MaterialCommunityIcons';
+import TrackPlayer, { useProgress, RepeatMode } from 'react-native-track-player';
 import { SPImgDF } from '../../../assest/images/Default';
-import { PROGRESS } from '../../../redux/actions';
+import {
+    PROGRESS, PAUSE, REPLAY, NEXT, PREVIOUS,
+    RANDOM, REPEAT,
+} from '../../../redux/actions';
+
 const widthScreen = Dimensions.get('window').width;
 
 const SRC002001 = ({ navigation }) => {
@@ -21,20 +26,8 @@ const SRC002001 = ({ navigation }) => {
     const { position, duration } = useProgress();
     const rotateValue = useRef(new Animated.Value(0)).current;
 
-    const [timePosition, setTimePosition] = useState('');
-    const [timeDuration, setTimeDuration] = useState('');
-
-    useEffect(() => {
-        //set time position la thoi gian hien tai cua bai hat theo dang mm:ss
-        const minutesPosition = Math.floor(position / 60);
-        const secondsPosition = Math.floor(position % 60);
-        const timePosition = `${minutesPosition < 10 ? '0' + minutesPosition : minutesPosition}:${secondsPosition < 10 ? '0' + secondsPosition : secondsPosition}`;
-        setTimePosition(timePosition);
-        const minutesDuration = Math.floor(duration / 60);
-        const secondsDuration = Math.floor(duration % 60);
-        const timeDuration = `${minutesDuration < 10 ? '0' + minutesDuration : minutesDuration}:${secondsDuration < 10 ? '0' + secondsDuration : secondsDuration}`;
-        setTimeDuration(timeDuration);
-    }, [progress]);
+    const timePosition = useSelector(state => state.playSongReducer.timeStart);
+    const timeDuration = useSelector(state => state.playSongReducer.timeEnd);
 
     useEffect(() => {
         Animated.loop(
@@ -45,7 +38,7 @@ const SRC002001 = ({ navigation }) => {
                 useNativeDriver: true,
             })
         ).start();
-    }, [rotateValue]);
+    }, [rotateValue, isPlaying]);
 
     const spin = rotateValue.interpolate({
         inputRange: [0, 1],
@@ -61,12 +54,98 @@ const SRC002001 = ({ navigation }) => {
 
     const setProgress = (value) => {
         const progress = Math.floor(value);
-        seekToPosition(value*duration/100);
+        seekToPosition(value * duration / 100);
         dispatch({
             type: PROGRESS,
             payload: progress,
         });
     };
+
+    //---------Play/Pause nhac----------
+    const playMusic = async () => {
+        if (isPlaying) {
+            dispatch({ type: PAUSE });
+            await TrackPlayer.pause();
+        } else {
+            dispatch({ type: REPLAY });
+            await TrackPlayer.play();
+        }
+    }
+
+    //--------Chuyen bai tiep theo----------
+    const nextMusic = async (indexSong) => {
+        dispatch({
+            type: NEXT, payload: {
+                indexSong: indexSong,
+            }
+        });
+        // await TrackPlayer.skipToNext();
+    }
+
+    //-------Quay lai bai truoc---------
+    const previousMusic = async (indexSong) => {
+        dispatch({
+            type: PREVIOUS, payload: {
+                indexSong: indexSong,
+            }
+        });
+        // await TrackPlayer.skipToPrevious();
+    }
+    // ------Random bai hat---------
+    const isRandom = useSelector(state => state.playSongReducer.isRandom);
+    const randomMusic = async () => {
+        console.log('isRandom', isRandom);
+        dispatch({
+            type: RANDOM, payload: {
+                isRandom: !isRandom,
+            }
+        });
+    }
+
+    // ------Lap lai bai hat---------
+    const isRepeat = useSelector(state => state.playSongReducer.isRepeat);
+    const [countSetRepeat, setCountSetRepeat] = useState(0);
+
+    useEffect(() => {
+        console.log('isRepeat', isRepeat);
+        if (isRepeat === 0) {
+            setCountSetRepeat(0);
+        } else if (isRepeat === 1) {
+            setCountSetRepeat(1);
+        } else if (isRepeat === 2) {
+            setCountSetRepeat(2);
+        }
+    }, [isRepeat]);
+
+    const repeatMusic = async (type) => {
+        dispatch({
+            type: REPEAT, payload: {
+                isRepeat: type,
+            }
+        });
+        if (type === 0) {
+            TrackPlayer.setRepeatMode(RepeatMode.Off);
+        }
+        if (type === 1) {
+            TrackPlayer.setRepeatMode(RepeatMode.Track);
+        }
+        if (type === 2) {
+            TrackPlayer.setRepeatMode(RepeatMode.Queue);
+        }
+    }
+
+    const handleSetTypeRepeat = () => {
+        if (countSetRepeat === 0) {
+            repeatMusic(1);
+            setCountSetRepeat(1);
+        } else if (countSetRepeat === 1) {
+            repeatMusic(2);
+            setCountSetRepeat(2);
+        } else if (countSetRepeat === 2) {
+            repeatMusic(0);
+            setCountSetRepeat(0);
+        }
+    }
 
 
     return (
@@ -89,7 +168,9 @@ const SRC002001 = ({ navigation }) => {
                 flex: 1,
                 alignItems: 'center',
                 paddingHorizontal: 10,
+                justifyContent: 'space-between',
             }}>
+                {/* View dia xoay vong tron */}
                 <View style={{
                     width: widthScreen - 80,
                     height: widthScreen - 80,
@@ -112,6 +193,7 @@ const SRC002001 = ({ navigation }) => {
                     />
                 </View>
 
+                {/* View thong tin bai hat */}
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -120,8 +202,9 @@ const SRC002001 = ({ navigation }) => {
                     marginTop: 30,
                     paddingHorizontal: 20,
                 }}>
+                    {/* Icon share */}
                     <Icon
-                        name="heart-outline"
+                        name="share-outline"
                         size={24}
                         color={Color.white}
                     />
@@ -159,6 +242,7 @@ const SRC002001 = ({ navigation }) => {
 
                 </View>
 
+                {/* View thanh tien trinh */}
                 <View style={{
                     width: '100%',
                     marginTop: 30,
@@ -190,11 +274,10 @@ const SRC002001 = ({ navigation }) => {
                         />
                     </View>
 
-                    
+
                     <View style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between',
-                        marginTop: 10,
                     }}>
                         <Text style={{
                             color: Color.white,
@@ -215,6 +298,107 @@ const SRC002001 = ({ navigation }) => {
                         </Text>
 
                     </View>
+                </View>
+
+                {/* View control */}
+                <View style={{
+                    width: '100%',
+                    marginTop: 30,
+                    paddingHorizontal: 20,
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                }}>
+                    <IconComunity
+                        name="shuffle-variant"
+                        size={24}
+                        color={isRandom ? Color.buttonColor : Color.white}
+                        onPress={() => randomMusic()}
+                    />
+
+                    <IconComunity
+                        name="skip-previous"
+                        size={40}
+                        color={Color.white}
+                        onPress={() => previousMusic(indexSong)}
+                    />
+                    {
+                        isPlaying ? (
+                            <IconComunity
+                                name="pause-circle"
+                                size={50}
+                                color={Color.buttonColor}
+                                onPress={() => playMusic()}
+                            />
+                        ) : (
+                            <IconComunity
+                                name="play-circle"
+                                size={50}
+                                color={Color.buttonColor}
+                                onPress={() => playMusic()}
+                            />
+                        )
+                    }
+                    <IconComunity
+                        name="skip-next"
+                        size={40}
+                        color={Color.white}
+                        onPress={() => nextMusic(indexSong)}
+                    />
+
+                    {
+                        isRepeat === 0 ? (
+                            <IconComunity
+                                name="repeat"
+                                size={24}
+                                color={Color.white}
+                                onPress={() => handleSetTypeRepeat()}
+                            />
+                        ) : (
+                            isRepeat === 1 ? (
+                                <IconComunity
+                                    name="repeat-once"
+                                    size={24}
+                                    color={Color.buttonColor}
+                                    onPress={() => handleSetTypeRepeat()}
+                                />
+                            ) : (
+                                <IconComunity
+                                    name="repeat"
+                                    size={24}
+                                    color={Color.buttonColor}
+                                    onPress={() => handleSetTypeRepeat()}
+                                />
+                            )
+                        )
+                    }
+
+                </View>
+
+                {/* View swipe up */}
+                <View style={{
+                    width: '100%',
+                    marginTop: 30,
+                    paddingHorizontal: 20,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    marginBottom: 30,
+                }}>
+                    <Icon
+                        name="chevron-up"
+                        size={24}
+                        color={Color.white}
+                    />
+                    <Text style={{
+                        color: Color.white,
+                        fontSize: 12,
+                        fontFamily: 'Roboto-Bold',
+                        opacity: 0.6,
+                        marginTop: 5,
+                    }}>
+                        Swipe up to view lyrics
+                    </Text>
                 </View>
 
 

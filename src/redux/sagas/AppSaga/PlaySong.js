@@ -10,6 +10,8 @@ import {
     AUTO_SONG, AUTO_SONG_S, AUTO_SONG_F,
     TIME_START, TIME_START_S, TIME_START_F,
     TIME_END, TIME_END_S, TIME_END_F,
+    RANDOM, RANDOM_S, RANDOM_F,
+    REPEAT, REPEAT_S, REPEAT_F,
 } from '../../actions';
 
 function* playSaga(action) {
@@ -153,6 +155,34 @@ function* timeEndSaga(action) {
     }
 }
 
+function* randomSaga(action) {
+    try {
+        yield put({
+            type: RANDOM_S,
+            payload: action.payload,
+        });
+    } catch (err) {
+        yield put({
+            type: RANDOM_F,
+            payload: err,
+        });
+    }
+}
+
+function* repeatSaga(action) {
+    try {
+        yield put({
+            type: REPEAT_S,
+            payload: action.payload,
+        });
+    } catch (err) {
+        yield put({
+            type: REPEAT_F,
+            payload: err,
+        });
+    }
+}
+
 export default function* playSongSaga (action) {
     if (action.type === PLAY) {
         yield call(playSaga, action);
@@ -174,5 +204,9 @@ export default function* playSongSaga (action) {
         yield call(timeStartSaga, action);
     }else if(action.type === TIME_END) {
         yield call(timeEndSaga, action);
+    }else if(action.type === RANDOM) {
+        yield call(randomSaga, action);
+    }else if(action.type === REPEAT) {
+        yield call(repeatSaga, action);
     }
 }

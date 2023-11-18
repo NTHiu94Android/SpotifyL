@@ -16,6 +16,7 @@ const SPHeader = ({
     iconRightOnPress,
     hasTitle = false,
     title,
+    titleOpacity = 1,
     titleColor = Color.white,
     titleSize = 20,
     hasLogo = false,
@@ -70,7 +71,8 @@ const SPHeader = ({
                         color: titleColor,
                         fontSize: titleSize,
                         fontFamily: 'Roboto-Bold',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        opacity: titleOpacity
                     }}
                 >
                     {title}

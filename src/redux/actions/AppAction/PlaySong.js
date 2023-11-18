@@ -251,3 +251,54 @@ export const timeEndF = (payload) => {
         payload
     }
 }
+
+export const RANDOM = 'RANDOM';
+export const RANDOM_S = 'RANDOM_SUCCESS';
+export const RANDOM_F = 'RANDOM_FAILED';
+
+export const random = (payload) => {
+    return {
+        type: RANDOM,
+        payload
+    }
+}
+
+export const randomS = (payload) => {
+    return {
+        type: RANDOM_S,
+        payload
+    }
+}
+
+export const randomF = (payload) => {
+    return {
+        type: RANDOM_F,
+        payload
+    }
+
+}
+
+export const REPEAT = 'REPEAT';
+export const REPEAT_S = 'REPEAT_SUCCESS';
+export const REPEAT_F = 'REPEAT_FAILED';
+
+export const repeat = (payload) => {
+    return {
+        type: REPEAT,
+        payload
+    }
+}
+
+export const repeatS = (payload) => {
+    return {
+        type: REPEAT_S,
+        payload
+    }
+}
+
+export const repeatF = (payload) => {
+    return {
+        type: REPEAT_F,
+        payload
+    }
+}

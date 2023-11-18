@@ -16,6 +16,8 @@ const ITSong = ({
   onPressIcon,
   marginTop = 0,
   marginBottom = 0,
+  imgWidth = 80,
+  imgHeight = 80,
 }) => {
   return (
     <View style={{
@@ -39,8 +41,8 @@ const ITSong = ({
           <Image
             source={{ uri: url }}
             style={{
-              width: 80,
-              height: 80,
+              width: imgWidth,
+              height: imgHeight,
               borderRadius: borderImg,
             }}
             resizeMode='contain'

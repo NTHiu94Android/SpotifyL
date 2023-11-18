@@ -3,6 +3,7 @@ import {
     LOGIN, CHANGE_DARK_MODE, CHANGE_LIGHT_MODE,
     NEXT, PLAY, PREVIOUS, PAUSE, REPLAY, PROGRESS,
     AUTO_SONG, TIME_START, TIME_END,
+    RANDOM, REPEAT,
 } from "../actions";
 import loginSaga from './LoginSaga';
 import appSaga from './AppSaga/ChangMode';
@@ -22,6 +23,8 @@ const sagas = function* () {
         takeEvery(AUTO_SONG, playSongSaga),
         takeEvery(TIME_START, playSongSaga),
         takeEvery(TIME_END, playSongSaga),
+        takeEvery(RANDOM, playSongSaga),
+        takeEvery(REPEAT, playSongSaga),
     ]);
 }
 

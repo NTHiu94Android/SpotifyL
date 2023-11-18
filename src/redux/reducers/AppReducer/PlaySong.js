@@ -9,6 +9,8 @@ import {
     AUTO_SONG, AUTO_SONG_S, AUTO_SONG_F,
     TIME_START, TIME_START_S, TIME_START_F,
     TIME_END, TIME_END_S, TIME_END_F,
+    RANDOM, RANDOM_S, RANDOM_F,
+    REPEAT, REPEAT_S, REPEAT_F,
 } from '../../actions';
 
 const initialState = {
@@ -20,6 +22,8 @@ const initialState = {
     progress: 0,
     timeStart: '',
     timeEnd: '',
+    isRandom: false,
+    isRepeat: 0,
 };
 
 const playSongReducer = (state = initialState, action) => {
@@ -173,6 +177,34 @@ const playSongReducer = (state = initialState, action) => {
                 timeEnd: action.payload,
             };
         case TIME_END_F:
+            return {
+                ...state,
+                error: action.payload
+            };
+        case RANDOM:
+            return {
+                ...state,
+            };
+        case RANDOM_S:
+            return {
+                ...state,
+                isRandom: action.payload.isRandom,
+            };
+        case RANDOM_F:
+            return {
+                ...state,
+                error: action.payload
+            };
+        case REPEAT:
+            return {
+                ...state,
+            };
+        case REPEAT_S:
+            return {
+                ...state,
+                isRepeat: action.payload.isRepeat,
+            };
+        case REPEAT_F:
             return {
                 ...state,
                 error: action.payload

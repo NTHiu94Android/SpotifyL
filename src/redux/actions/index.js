@@ -28,6 +28,10 @@ import {
     timeStart, timeStartS, timeStartF,
     TIME_END, TIME_END_S, TIME_END_F,
     timeEnd, timeEndS, timeEndF,
+    RANDOM, RANDOM_S, RANDOM_F,
+    random, randomS, randomF,
+    REPEAT, REPEAT_S, REPEAT_F,
+    repeat, repeatS, repeatF,
 } from '../actions/AppAction/PlaySong';
 
 export {
@@ -59,5 +63,9 @@ export {
     timeStart, timeStartS, timeStartF,
     TIME_END, TIME_END_S, TIME_END_F,
     timeEnd, timeEndS, timeEndF,
+    RANDOM, RANDOM_S, RANDOM_F,
+    random, randomS, randomF,
+    REPEAT, REPEAT_S, REPEAT_F,
+    repeat, repeatS, repeatF,
 
 }

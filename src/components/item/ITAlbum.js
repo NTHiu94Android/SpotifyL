@@ -21,11 +21,17 @@ const ITAlbum = ({
   detailColor = Color.white,
   paddingHorizontal = 0,
   paddingVertical = 0,
+  justifyContent,
+  alignItems,
+  opacity = 1
 }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={{
         width: widthImg,
+        justifyContent: justifyContent,
+        alignItems: alignItems,
+        opacity: opacity,
       }}>
         <View style={{
           position: 'relative'

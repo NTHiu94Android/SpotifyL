@@ -1,7 +1,7 @@
 import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDispatch, useSelector } from 'react-redux';
-import { NEXT, PREVIOUS, PAUSE, REPLAY, PROGRESS, PLAY } from '../../redux/actions';
+import { NEXT, PREVIOUS, PAUSE, REPLAY, PROGRESS, PLAY, TIME_END, TIME_START } from '../../redux/actions';
 import Color from '../../assest/colors';
 import React, { useEffect, useState } from 'react';
 import TrackPlayer, {
@@ -20,6 +20,7 @@ const SPControl = ({
     const width = Dimensions.get('window').width;
     const isPlay = useSelector(state => state.playSongReducer.isPlaying);
     const listSong = useSelector(state => state.playSongReducer.listSong);
+    const isRandom = useSelector(state => state.playSongReducer.isRandom);
     const listTrack = listSong.map((item, index) => {
         return {
             id: item.pk,
@@ -41,26 +42,39 @@ const SPControl = ({
         dispatch({
             type: PROGRESS, payload: calculatedProgress.toFixed(0)
         });
+        const minutesPosition = Math.floor(position / 60);
+        const secondsPosition = Math.floor(position % 60);
+        const timePosition = `${minutesPosition < 10 ? '0' + minutesPosition : minutesPosition}:${secondsPosition < 10 ? '0' + secondsPosition : secondsPosition}`;
+        const minutesDuration = Math.floor(duration / 60);
+        const secondsDuration = Math.floor(duration % 60);
+        const timeDuration = `${minutesDuration < 10 ? '0' + minutesDuration : minutesDuration}:${secondsDuration < 10 ? '0' + secondsDuration : secondsDuration}`;
+        dispatch({
+            type: TIME_START, payload: timePosition
+        });
+        dispatch({
+            type: TIME_END, payload: timeDuration
+        });
+
     }, [position, duration]);
 
     //--------Tu dong chuyen bai hat----------
     useTrackPlayerEvents(['playback-track-changed'], async (event) => {
         console.log('Track changed:', event);
         const trackObject = await TrackPlayer.getTrack(event.nextTrack);
-        const itemSongNew = {
-            pk : trackObject.id,
-            link : trackObject.url,
-            songName : trackObject.title,
-            songDetail : trackObject.artist,
-            url : trackObject.artwork,
-        }
-        // if(indexSong == trackObject.id) return;
-        dispatch({ type: PLAY, payload: {
-            isPlaying: true,
-            itemSongPlaying:  itemSongNew ,
-            listSong: listSong,
-            indexSong: indexSong,
-        } });
+        dispatch({
+            type: PLAY, payload: {
+                isPlaying: true,
+                itemSongPlaying: {
+                    pk: trackObject.id,
+                    link: trackObject.url,
+                    songName: trackObject.title,
+                    songDetail: trackObject.artist,
+                    url: trackObject.artwork,
+                },
+                listSong: listSong,
+                indexSong: indexSong,
+            }
+        });
     });
 
     //-------Play nhac khi chon bai hoac chuyen bai-----------
