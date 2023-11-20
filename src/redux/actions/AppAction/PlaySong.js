@@ -302,3 +302,28 @@ export const repeatF = (payload) => {
         payload
     }
 }
+
+export const INIT_PLAYER = 'INIT_PLAYER';
+export const INIT_PLAYER_S = 'INIT_PLAYER_SUCCESS';
+export const INIT_PLAYER_F = 'INIT_PLAYER_FAILED';
+
+export const initPlayer = (payload) => {
+    return {
+        type: INIT_PLAYER,
+        payload
+    }
+}
+
+export const initPlayerS = (payload) => {
+    return {
+        type: INIT_PLAYER_S,
+        payload
+    }
+}
+
+export const initPlayerF = (payload) => {
+    return {
+        type: INIT_PLAYER_F,
+        payload
+    }
+}

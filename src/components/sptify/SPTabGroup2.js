@@ -2,7 +2,7 @@ import { View } from 'react-native'
 import Swiper from 'react-native-swiper';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
-import { ITSong } from '../../components';
+import { ITSong } from '..';
 import {PLAY} from '../../redux/actions'
 
 const TabGroup = ({ dataToTab, navigation }) => {

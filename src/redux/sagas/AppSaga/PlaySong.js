@@ -12,6 +12,7 @@ import {
     TIME_END, TIME_END_S, TIME_END_F,
     RANDOM, RANDOM_S, RANDOM_F,
     REPEAT, REPEAT_S, REPEAT_F,
+    INIT_PLAYER, INIT_PLAYER_S, INIT_PLAYER_F,
 } from '../../actions';
 
 function* playSaga(action) {
@@ -183,6 +184,20 @@ function* repeatSaga(action) {
     }
 }
 
+function* initPlayerSaga(action) {
+    try {
+        yield put({
+            type: INIT_PLAYER_S,
+            payload: action.payload,
+        });
+    } catch (err) {
+        yield put({
+            type: INIT_PLAYER_F,
+            payload: err,
+        });
+    }
+}
+
 export default function* playSongSaga (action) {
     if (action.type === PLAY) {
         yield call(playSaga, action);
@@ -208,5 +223,7 @@ export default function* playSongSaga (action) {
         yield call(randomSaga, action);
     }else if(action.type === REPEAT) {
         yield call(repeatSaga, action);
+    }else if(action.type === INIT_PLAYER) {
+        yield call(initPlayerSaga, action);
     }
 }

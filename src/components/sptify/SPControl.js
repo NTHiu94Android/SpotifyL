@@ -1,7 +1,11 @@
 import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDispatch, useSelector } from 'react-redux';
-import { NEXT, PREVIOUS, PAUSE, REPLAY, PROGRESS, PLAY, TIME_END, TIME_START } from '../../redux/actions';
+import {
+    NEXT, PREVIOUS, PAUSE, REPLAY,
+    PROGRESS, PLAY, TIME_END, TIME_START,
+    INIT_PLAYER
+} from '../../redux/actions';
 import Color from '../../assest/colors';
 import React, { useEffect, useState } from 'react';
 import TrackPlayer, {
@@ -14,12 +18,14 @@ const SPControl = ({
     songName,
     songDetail,
     indexSong,
-    navigation
+    navigation,
+    isReplay = true,
 }) => {
     const dispatch = useDispatch();
     const width = Dimensions.get('window').width;
     const isPlay = useSelector(state => state.playSongReducer.isPlaying);
     const listSong = useSelector(state => state.playSongReducer.listSong);
+    const isPlayerInitialized = useSelector(state => state.playSongReducer.isPlayerInitialized);
     const isRandom = useSelector(state => state.playSongReducer.isRandom);
     const listTrack = listSong.map((item, index) => {
         return {
@@ -31,7 +37,7 @@ const SPControl = ({
         }
     });
 
-    const [isPlayerInitialized, setIsPlayerInitialized] = useState(false);
+    // const [isPlayerInitialized, setIsPlayerInitialized] = useState(false);
     const progress = useSelector(state => state.playSongReducer.progress);
     const { position, duration } = useProgress();
 
@@ -83,7 +89,9 @@ const SPControl = ({
             if (!isPlayerInitialized) {
                 await TrackPlayer.setupPlayer();
                 await TrackPlayer.add(listTrack);
-                setIsPlayerInitialized(true);
+                dispatch({
+                    type: INIT_PLAYER, payload: true
+                });
             }
             await TrackPlayer.play();
             await TrackPlayer.skip(indexSong);
@@ -91,7 +99,9 @@ const SPControl = ({
                 type: PROGRESS, payload: 0
             });
         };
-        setupPlayerAndPlay();
+        if(isReplay) {
+            setupPlayerAndPlay();
+        }
     }, [indexSong]);
 
     //---------Play/Pause nhac----------

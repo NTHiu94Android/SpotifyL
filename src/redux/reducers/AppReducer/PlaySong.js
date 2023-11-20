@@ -11,6 +11,7 @@ import {
     TIME_END, TIME_END_S, TIME_END_F,
     RANDOM, RANDOM_S, RANDOM_F,
     REPEAT, REPEAT_S, REPEAT_F,
+    INIT_PLAYER, INIT_PLAYER_S, INIT_PLAYER_F,
 } from '../../actions';
 
 const initialState = {
@@ -24,6 +25,7 @@ const initialState = {
     timeEnd: '',
     isRandom: false,
     isRepeat: 0,
+    isPlayerInitialized: false,
 };
 
 const playSongReducer = (state = initialState, action) => {
@@ -205,6 +207,20 @@ const playSongReducer = (state = initialState, action) => {
                 isRepeat: action.payload.isRepeat,
             };
         case REPEAT_F:
+            return {
+                ...state,
+                error: action.payload
+            };
+        case INIT_PLAYER:
+            return {
+                ...state,
+            };
+        case INIT_PLAYER_S:
+            return {
+                ...state,
+                isPlayerInitialized: true,
+            };
+        case INIT_PLAYER_F:
             return {
                 ...state,
                 error: action.payload

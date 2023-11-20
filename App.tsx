@@ -13,6 +13,7 @@ import Redux from './src/redux/stores';
 import Color from './src/assest/colors';
 //Screens
 import SRC001 from './src/screens/SRC001';
+import SRC001002_1 from './src/screens/SRC001/SRC001002/SRC001002_1';
 import SRC002 from './src/screens/SRC002';
 import SRC003 from './src/screens/SRC003';
 //Create Stack 
@@ -80,6 +81,7 @@ const App = () => {
                 }}
               >
                 <Stack.Screen name="SRC001" component={SRC001} />
+                <Stack.Screen name="SRC001002_1" component={SRC001002_1} />
                 <Stack.Screen
                   name="SRC002"
                   component={SRC002}

@@ -32,6 +32,8 @@ import {
     random, randomS, randomF,
     REPEAT, REPEAT_S, REPEAT_F,
     repeat, repeatS, repeatF,
+    INIT_PLAYER, INIT_PLAYER_S, INIT_PLAYER_F,
+    initPlayer, initPlayerS, initPlayerF,
 } from '../actions/AppAction/PlaySong';
 
 export {
@@ -67,5 +69,7 @@ export {
     random, randomS, randomF,
     REPEAT, REPEAT_S, REPEAT_F,
     repeat, repeatS, repeatF,
+    INIT_PLAYER, INIT_PLAYER_S, INIT_PLAYER_F,
+    initPlayer, initPlayerS, initPlayerF,
 
 }

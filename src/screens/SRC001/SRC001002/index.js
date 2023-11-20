@@ -3,12 +3,12 @@ import React, {useState} from 'react';
 import {SPHeader, ITAlbum} from '../../../components';
 import Color from '../../../assest/colors';
 import {SPImgDF} from '../../../assest/images/Default';
-
-import SRC001002_1 from '../SRC001002/SRC001002_1';
+import { useNavigation } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
 const Playlist = () => {
+    const navigation = useNavigation();
     const [listAlbum, setListAlbum] = useState([
         {
             _id: 1,
@@ -112,61 +112,59 @@ const Playlist = () => {
         console.log('search');
     }
     return (
-        <SRC001002_1 />
-        // <View style={{
-        //     flex: 1,
-        //     backgroundColor: Color.mainColor,
-        // }}>
-        //     <SPHeader
-        //         backgroundColor={Color.mainColor}
-        //         hasTitle={true}
-        //         title={'Playlist'}
-        //         titleSize={20}
-        //         hasIconLeft={true}
-        //         iconLeft="search-outline"
-        //         iconLeftSize={20}
-        //         iconLeftOnPress={() => handleSearch()}
-        //         hasIconRight={true}
-        //         iconRight="add-outline"
-        //         iconRightSize={20}
-        //     />
+        <View style={{
+            flex: 1,
+            backgroundColor: Color.mainColor,
+        }}>
+            <SPHeader
+                backgroundColor={Color.mainColor}
+                hasTitle={true}
+                title={'Playlist'}
+                titleSize={20}
+                hasIconLeft={true}
+                iconLeft="search-outline"
+                iconLeftSize={20}
+                iconLeftOnPress={() => handleSearch()}
+                hasIconRight={true}
+                iconRight="add-outline"
+                iconRightSize={20}
+            />
 
-        //     <View style={{
-        //         flex: 1,
-        //         alignItems: 'center',
-        //         paddingHorizontal: 10,
-        //         justifyContent: 'space-between',
-        //     }}>
-        //         <FlatList
-        //             data={listAlbum}
-        //             keyExtractor={(item, index) => item._id.toString()}
-        //             numColumns={2}
-        //             renderItem={({item, index}) => {
-        //                 return (
-        //                     <View style={{
-        //                         width: '50%',
-        //                         justifyContent: 'center',
-        //                         alignItems: 'center',
-        //                         // backgroundColor: 'yellow',
-        //                         padding: 10
-        //                     }}>
-        //                         <ITAlbum
-        //                             albumName={item.name}
-        //                             url={item.url}
-        //                             widthImg={width / 2 - 40}
-        //                             heightImg={width / 2 - 40}
-        //                             detail={item.detail}
-        //                             onPress={() => console.log('press')}
-        //                         />
-        //                     </View>
-        //                 )
-        //             }}
-        //         />
+            <View style={{
+                flex: 1,
+                alignItems: 'center',
+                paddingHorizontal: 10,
+                justifyContent: 'space-between',
+            }}>
+                <FlatList
+                    data={listAlbum}
+                    keyExtractor={(item, index) => item._id.toString()}
+                    numColumns={2}
+                    renderItem={({item, index}) => {
+                        return (
+                            <View style={{
+                                width: '50%',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: 10
+                            }}>
+                                <ITAlbum
+                                    albumName={item.name}
+                                    url={item.url}
+                                    widthImg={width / 2 - 40}
+                                    heightImg={width / 2 - 40}
+                                    detail={item.detail}
+                                    onPress={() => navigation.navigate('SRC001002_1')}
+                                />
+                            </View>
+                        )
+                    }}
+                />
                 
 
 
-        //     </View>
-        // </View>
+            </View>
+        </View>
     )
 };
 

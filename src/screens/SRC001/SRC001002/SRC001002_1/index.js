@@ -1,14 +1,21 @@
 import { View, Text, Dimensions } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { SPHeader, ITAlbum, ITSong } from '../../../../components';
+import { SPHeader, ITAlbum, ITSong, SPControl } from '../../../../components';
 import Color from '../../../../assest/colors';
 import { SPImgDF } from '../../../../assest/images/Default';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { FlatList, ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
-const index = () => {
+const SRCOO1OO2_1 = () => {
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const isShowControl = useSelector(state => state.playSongReducer.isShowControl);
+    const itemSongPlaying = useSelector(state => state.playSongReducer.itemSongPlaying);
+    const indexSong = useSelector(state => state.playSongReducer.indexSong);
     const [listSong, setListSong] = useState([
         {
             _id: 1,
@@ -58,22 +65,22 @@ const index = () => {
 
     const handleScroll = (event) => {
         const scrollPosition = event.nativeEvent.contentOffset.y;
-        if (scrollPosition > 10 && scrollPosition < 20){
+        if (scrollPosition > 10 && scrollPosition < 20) {
             setIsShowHeaderTitleOpacity(0.2);
             setIsShowAlbumOpacity(0.9);
-        }else if( scrollPosition > 20 && scrollPosition < 40){
+        } else if (scrollPosition > 20 && scrollPosition < 40) {
             setIsShowHeaderTitleOpacity(0.4);
             setIsShowAlbumOpacity(0.7);
-        }else if( scrollPosition > 40 && scrollPosition < 60){
+        } else if (scrollPosition > 40 && scrollPosition < 60) {
             setIsShowHeaderTitleOpacity(0.6);
             setIsShowAlbumOpacity(0.5);
-        }else if( scrollPosition > 60 && scrollPosition < 80){
+        } else if (scrollPosition > 60 && scrollPosition < 80) {
             setIsShowHeaderTitleOpacity(0.8);
             setIsShowAlbumOpacity(0.3);
-        }else if( scrollPosition > 80){
+        } else if (scrollPosition > 80) {
             setIsShowHeaderTitleOpacity(1);
             setIsShowAlbumOpacity(0.2);
-        }else{
+        } else {
             setIsShowHeaderTitleOpacity(0);
             setIsShowAlbumOpacity(1);
         }
@@ -91,14 +98,23 @@ const index = () => {
             <SPHeader
                 hasIconLeft={true}
                 iconLeft={'arrow-back-outline'}
-                iconLeftOnPress={() => console.log('back')}
-                hasIconRight={true}
-                iconRight={'ellipsis-horizontal-outline'}
-                iconRightOnPress={() => console.log('more')}
+                iconLeftOnPress={() => navigation.goBack()}
                 hasTitle={true}
                 title={'Album Phan Manh Quynh'}
                 titleOpacity={isShowHeaderTitleOpacity}
             />
+            {
+                isShowControl && (
+                    <SPControl
+                        url={itemSongPlaying.url ? itemSongPlaying.url : SPImgDF}
+                        songName={itemSongPlaying.songName ? itemSongPlaying.songName : 'Song Name Undefined'}
+                        songDetail={itemSongPlaying.songDetail ? itemSongPlaying.songDetail : 'Song Detail Undefined'}
+                        indexSong={indexSong ? indexSong : 0}
+                        navigation={navigation}
+                        isReplay={false}
+                    />
+                )
+            }
             <ScrollView
                 onScroll={(event) => handleScroll(event)}
                 style={{
@@ -106,6 +122,7 @@ const index = () => {
                     marginTop: 10,
                     paddingHorizontal: 10,
                     height: '100%',
+                    marginBottom: isShowControl ? 55 : 0
                 }}
             >
                 <View style={{
@@ -243,4 +260,4 @@ const index = () => {
     )
 }
 
-export default index
+export default SRCOO1OO2_1;
